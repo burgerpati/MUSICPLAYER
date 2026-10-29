@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Echoes of You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/intro.css">
+<link rel="stylesheet" href="css/playlist.css">
+<link rel="stylesheet" href="css/dog.css">
+<link rel="stylesheet" href="css/extras.css">
+</head>
+<body>
+
+<canvas id="sky"></canvas>
+<div class="horizon-glow"></div>
+<div class="floor-wrap"><div class="floor"></div></div>
+<canvas id="wipe"></canvas>
+<div id="tod"></div>
+<div id="tint"></div>
+<div id="night"><i class="moon"></i><div id="stars"></div></div>
+<canvas id="trail"></canvas>
+<canvas id="pup" aria-hidden="true"></canvas>
+<div class="scanlines"></div>
+
+<div class="hud">
+  <div class="lives" id="lives"></div>
+  <div><span class="blink">&#9835;</span> <span id="hudScore">000</span> &nbsp; LV.<span id="hudLv">01</span></div>
+</div>
+
+<!-- ================= SCREEN 1: INTRO ================= -->
+<main class="screen active" id="s-intro">
+  <h1 id="title">ECHOES OF YOU &gt;.&lt;</h1>
+  <p class="sub"><span id="sub"></span><span class="cursor"></span></p>
+
+  <section class="win" aria-label="Record player">
+    <div class="titlebar">
+      <span class="name"><span class="dot"></span>echoes_of_you.exe</span>
+      <span class="btns"><i>_</i><i>o</i><i>x</i></span>
+    </div>
+    <div class="win-body">
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <img class="deck" src="turntable_transparent.gif" alt="Pixel record player spinning a vinyl">
+      <div class="shelf"></div>
+      <div class="player-mini">
+        <span class="note" id="noteIcon"></span>
+        <div class="marquee"><span>now spinning &bull; every song here is a piece of you &bull; press start to begin &bull;</span></div>
+        <div class="eq"><b></b><b></b><b></b><b></b><b></b></div>
+        <div class="track" id="track"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="start-wrap">
+    <button class="start" id="start"><span class="arrow" id="arrowL"></span>START<span class="arrow l" id="arrowR"></span></button>
+    <div class="loadbar" id="loadbar"><i></i></div>
+    <div class="hint" id="hint">PRESS START TO PLAY</div>
+  </div>
+</main>
+
+<!-- ================= SCREEN 2: CUPID'S PLAYLIST ================= -->
+<main class="screen" id="s-player">
+  <div class="layout">
+    <div class="side">
+      <div id="lyric-sky" aria-hidden="true"></div>
+      <div id="dog-stage">
+        <div id="dog-bubble"><span></span></div>
+        <div id="dog-fx"></div>
+        <div id="dog-wrap"><img class="deck" id="dog" role="button" tabindex="0" aria-label="Pet the dog" src="assets/dog/idle.png" alt="Pixel dog that dances when the music plays"><div id="dog-acc"></div></div>
+      </div>
+      <div class="shelf"></div>
+      <div class="tag">&hearts; ECHOES OF YOU &hearts;</div>
+      <button id="note-btn" type="button" aria-expanded="false">&hearts; LOVE NOTE</button>
+      <div id="note-box" hidden></div>
+      <div id="dog-tools"><button id="sleep-btn" type="button">ZZZ: OFF</button><button id="treat-btn" type="button">&#10022; TREAT</button></div>
+      <div id="heard">HEARD <b id="heard-n">0</b>/<span id="heard-t">23</span> &middot; &#9733; <b id="ach-n">0</b>/<span id="ach-t">6</span></div>
+      <div class="keys">SPACE play &middot; &larr;&rarr; skip &middot; &uarr;&darr; vol &middot; M mute</div>
+    </div>
+
+    <section class="win" aria-label="Cupid's Playlist">
+      <div class="titlebar">
+        <span class="name"><span class="dot"></span>cupids_playlist.exe</span>
+        <span class="btns"><i>_</i><i>o</i><button id="backBtn" title="Back to intro" aria-label="Back to intro">x</button></span>
+      </div>
+      <div id="player-hero">
+        <div id="hero-title">&hearts; CUPID'S PLAYLIST &hearts;</div>
+        <div id="hero-sub">my dearest, jasmine &middot; by bien</div>
+        <div id="hero-congrats">YOU SURVIVED THE MAZE OF LOVE!</div>
+      </div>
+      <div id="player-body">
+        <div id="album-section">
+          <div id="album-wrap">
+            <div id="vinyl-pos"><div id="vinyl"></div></div>
+            <div id="album-art"><img id="aimg" src="" alt=""/><div id="album-fb">&hearts;</div></div>
+          </div>
+          <div id="song-meta">
+            <div id="song-title">Kingston</div>
+            <div id="song-artist">Faye Webster</div>
+            <div id="now-playing-tag">&#9834; NOW PLAYING</div>
+          </div>
+        </div>
+        <div id="audio-viz"></div>
+        <div id="progress-section">
+          <div id="prog-bar"><div id="prog-fill"></div><div id="prog-handle" style="left:0%"></div></div>
+          <div id="time-row"><span id="tc">0:00</span><span id="td">3:13</span></div>
+        </div>
+        <div id="controls-section">
+          <button class="ctrl" id="shuffle-btn" aria-label="Shuffle">&#8644;</button>
+          <button class="ctrl" id="prev-btn" aria-label="Previous">&#9198;</button>
+          <button class="ctrl" id="play-btn" aria-label="Play or pause">&#9654;</button>
+          <button class="ctrl" id="next-btn" aria-label="Next">&#9197;</button>
+          <button class="ctrl" id="repeat-btn" aria-label="Repeat">&#8634;</button>
+        </div>
+        <div id="vol-section">
+          <span id="vol-icon">&#9834;</span>
+          <input type="range" id="vol-slider" min="0" max="100" value="80"/>
+          <span id="vol-val">80</span>
+        </div>
+        <div id="tracklist-section">
+          <div id="tl-header">&hearts; TRACKLIST &mdash; 23 SONGS</div>
+          <div id="tl"></div>
+        </div>
+        <div id="spotify-section">
+          <a id="sp-btn" href="https://open.spotify.com/playlist/7KGLOl9cUGlaDKArLAe65Z" target="_blank" rel="noopener">&#9654; OPEN IN SPOTIFY</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="toast" role="status" aria-live="polite"><b>&#9733; ACHIEVEMENT UNLOCKED</b><strong></strong><em></em></div>
+
+<script src="js/shared.js"></script>
+<script src="js/intro.js"></script>
+<script src="js/tracks.js"></script>
+<script src="js/playlist.js"></script>
+<script src="js/dog.js"></script>
+<script src="js/keyboard.js"></script>
+<script src="js/extras.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
