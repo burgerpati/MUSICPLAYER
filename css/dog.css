@@ -1,0 +1,113 @@
+/* DOG — mascot, speech bubble, love note, night sky, lyrics, sleep/treat tools */
+
+  /* =============== DOG EXTRAS =============== */
+  .side { --sideW: min(400px, 70vw); width: var(--sideW); }
+  #dog-stage { position: relative; width: 100%; }
+  #dog-stage .deck { width: 100%; aspect-ratio: 1300 / 944; object-fit: contain; object-position: 50% 100%; }
+  #dog-wrap { transform-origin: 50% 94%; }
+  #s-player { --glow: rgba(255, 76, 138, .6); --glow2: rgba(255, 76, 138, .28); }
+  #dog { cursor: pointer; animation: dogGlow 2.6s ease-in-out infinite alternate; filter: drop-shadow(0 0 14px var(--glow)); }
+  @keyframes dogGlow { from { filter: drop-shadow(0 0 8px var(--glow)); } to { filter: drop-shadow(0 0 22px var(--glow)); } }
+  #dog:focus, #dog:focus-visible { outline: none; }
+  #dog:focus-visible { filter: drop-shadow(0 0 22px var(--glow)) brightness(1.12); animation: none; }
+  #s-player .win {
+    box-shadow: 0 -4px 0 0 var(--pink), 0 4px 0 0 var(--pink), -4px 0 0 0 var(--pink), 4px 0 0 0 var(--pink),
+      12px 12px 0 0 rgba(10, 0, 8, .55), 0 0 60px 6px var(--glow2);
+    transition: box-shadow 1s;
+  }
+  #dog-wrap.sleep { animation: none; }
+  #dog-wrap.sleep #dog { animation: none; filter: drop-shadow(0 0 8px var(--glow)) brightness(.78); }
+  #dog-wrap.stretch { animation: stretchUp 1.05s steps(9) 1; }
+  @keyframes stretchUp { 0% { transform: none; } 25%, 55% { transform: translateY(-8px) scale(.93, 1.1); } 80% { transform: translateY(0) scale(1.06, .93); } 100% { transform: none; } }
+  #dog-wrap { position: relative; }
+  #dog-env { position: absolute; left: 0; top: 0; width: 36px; height: auto; image-rendering: pixelated; display: none; pointer-events: none; z-index: 3; }
+  #dog-acc { position: absolute; inset: 0; pointer-events: none; }
+  #dog-acc img { position: absolute; display: none; image-rendering: pixelated; height: auto; }
+  #dog-tools { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 12px; }
+  #dog-tools button { font-family: 'Press Start 2P', monospace; font-size: 7px; padding: 8px 10px; cursor: pointer; border: 0; background: #3a0824; color: var(--pink-soft);
+    box-shadow: 0 -3px 0 0 var(--rose), 0 3px 0 0 #120008, -3px 0 0 0 var(--rose), 3px 0 0 0 #120008, inset 0 -3px 0 0 #260416; }
+  #dog-tools button:hover { background: #561236; color: var(--gold-hi); }
+  #dog-tools button:active { transform: translateY(3px); }
+  #dog-tools button:disabled { opacity: .55; cursor: default; transform: none; }
+  #tod { position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity 3s ease; }
+  body.tod-morning #tod { opacity: 1; background: radial-gradient(ellipse at 50% 22%, rgba(255, 205, 110, .22), rgba(255, 170, 90, .07) 60%, transparent 85%); }
+  body.tod-eve #tod { opacity: 1; background: linear-gradient(to top, rgba(255, 110, 80, .2), rgba(255, 90, 140, .08) 55%, transparent 85%); }
+  body.tod-late #tod { opacity: 1; background: radial-gradient(ellipse at 50% 40%, rgba(90, 70, 200, .16), rgba(30, 20, 90, .24) 100%); }
+  #night .moon { position: absolute; left: clamp(24px, 11vw, 180px); top: 9vh; width: 88px; height: 88px; background: url(../assets/moon.png) center / contain no-repeat; image-rendering: pixelated; filter: drop-shadow(0 0 14px rgba(255, 244, 190, .55)); }
+  #stars i { position: absolute; width: 3px; height: 3px; background: #fff6c8; animation: tw 2.4s steps(2) infinite; }
+  #stars i.b { box-shadow: -3px 0 0 #fff6c8, 3px 0 0 #fff6c8, 0 -3px 0 #fff6c8, 0 3px 0 #fff6c8; }
+  @keyframes tw { 0% { opacity: .25; } 50% { opacity: 1; } 100% { opacity: .25; } }
+  #night .shoot { position: absolute; width: 74px; height: 3px; background: linear-gradient(90deg, rgba(255,255,255,0), #fff); opacity: 0; animation: shoot 1s steps(10) 1; }
+  @keyframes shoot { 0% { opacity: 1; transform: translate(0, 0) rotate(28deg); } 100% { opacity: 0; transform: translate(280px, 150px) rotate(28deg); } }
+  #night { position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity 1.8s ease;
+    background: radial-gradient(ellipse at 50% 42%, rgba(70, 80, 200, .42) 0%, rgba(24, 20, 100, .62) 55%, rgba(8, 6, 40, .82) 100%); }
+  body.night #night { opacity: 1; }
+  @keyframes breathe { 50% { transform: scale(1.02, 1.04); } }
+  #dog-wrap.hop { animation: hop .55s steps(6) 1; }
+  @keyframes hop { 0% { transform: none; } 35% { transform: translateY(-38px) scale(.97, 1.05); } 70% { transform: translateY(0) scale(1.05, .93); } 100% { transform: none; } }
+  #dog-wrap.shake { animation: shake .36s steps(3) 1; }
+  @keyframes shake { 0%, 100% { transform: none; } 20% { transform: translateX(-9px) rotate(-3deg); } 40% { transform: translateX(9px) rotate(3deg); } 60% { transform: translateX(-6px) rotate(-2deg); } 80% { transform: translateX(6px) rotate(2deg); } }
+
+  #dog-fx { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  .fx { position: absolute; font-size: 18px; line-height: 1; font-family: system-ui, 'Segoe UI Symbol', sans-serif; text-shadow: 2px 2px 0 var(--deep); animation: floatUp 2.2s steps(11) forwards; }
+  .fx.z { font-family: 'Press Start 2P', monospace; font-size: 22px; color: #cfd8ff; animation-duration: 3s; animation-timing-function: steps(15); }
+  @keyframes floatUp { 0% { opacity: 0; transform: translate(0, 0); } 12% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx, 0), -110px); } }
+
+  #dog-bubble {
+    position: absolute; left: 50%; top: 3%; z-index: 3; transform: translateX(-50%); pointer-events: none;
+    padding: 7px 10px; background: #fff0f6; color: #3a0824; font-size: 8px; line-height: 1.5; text-align: center;
+    box-shadow: 0 -3px 0 0 var(--pink), 0 3px 0 0 var(--pink), -3px 0 0 0 var(--pink), 3px 0 0 0 var(--pink);
+    opacity: 0; transition: opacity .12s steps(2);
+  }
+  #dog-bubble.on { opacity: 1; }
+  #dog-bubble span { display: block; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #dog-bubble::after { content: ''; position: absolute; left: 50%; bottom: -9px; margin-left: -4px; width: 8px; height: 8px; background: #fff0f6; box-shadow: 3px 3px 0 0 var(--pink), -3px 3px 0 0 var(--pink); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+
+  /* ---- floating lyrics above the dog ---- */
+  #lyric-sky { position: relative; width: 100%; height: 54px; margin-bottom: 6px; pointer-events: none; }
+  .ly {
+    position: absolute; left: -12%; right: -12%; bottom: 0; text-align: center; font-size: 9px; line-height: 1.7;
+    color: var(--gold-hi); text-shadow: 2px 2px 0 var(--deep);
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; justify-content: center;
+    animation: lyIn .5s steps(5) both, lyBob 2.4s steps(2) .5s infinite alternate;
+  }
+  .ly::before { content: '\266A '; color: var(--pink); }
+  .ly.out { animation: lyOut .9s steps(9) forwards; }
+  @keyframes lyIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes lyBob { to { transform: translateY(-3px); } }
+  @keyframes lyOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-34px); } }
+  @media (min-width: 760px) and (max-height: 720px) { #lyric-sky { height: 36px; } }
+  #note-btn {
+    margin-top: 14px; font-family: 'Press Start 2P', monospace; font-size: 8px; padding: 9px 12px; cursor: pointer; border: 0;
+    background: #3a0824; color: var(--pink-soft);
+    box-shadow: 0 -3px 0 0 var(--rose), 0 3px 0 0 #120008, -3px 0 0 0 var(--rose), 3px 0 0 0 #120008, inset 0 -3px 0 0 #260416;
+  }
+  #note-btn:hover, #note-btn[aria-expanded="true"] { background: #561236; color: var(--gold-hi); }
+  #note-btn:active { transform: translateY(3px); }
+  #note-box {
+    margin-top: 14px; width: 100%; padding: 10px 12px; min-height: 3em; background: #fff0f6; color: #3a0824; text-align: left;
+    font-size: 8px; line-height: 1.8; box-shadow: 0 -3px 0 0 var(--pink), 0 3px 0 0 var(--pink), -3px 0 0 0 var(--pink), 3px 0 0 0 var(--pink);
+  }
+  #note-box[hidden] { display: none; }
+  #heard { margin-top: 14px; font-size: 7px; letter-spacing: .08em; color: var(--pink-soft); text-shadow: 2px 2px 0 var(--deep); }
+  #heard b { color: var(--gold-hi); font-weight: 400; }
+  .keys { margin-top: 8px; font-size: 7px; line-height: 1.9; text-align: center; color: #a8366a; }
+
+  #toast {
+    position: fixed; top: 52px; left: 50%; z-index: 80; width: min(320px, 92vw); padding: 12px 14px; text-align: center;
+    background: #2d0020; color: #fff; pointer-events: none;
+    box-shadow: 0 -4px 0 0 var(--gold-hi), 0 4px 0 0 var(--gold-hi), -4px 0 0 0 var(--gold-hi), 4px 0 0 0 var(--gold-hi), 8px 8px 0 0 rgba(10, 0, 8, .6);
+    transform: translate(-50%, calc(-100% - 90px)); visibility: hidden; transition: transform .35s steps(5), visibility 0s .35s;
+  }
+  #toast.on { transform: translate(-50%, 0); visibility: visible; transition: transform .35s steps(5), visibility 0s; }
+  #toast b { display: block; font-size: 7px; font-weight: 400; color: var(--gold-hi); margin-bottom: 8px; }
+  #toast strong { display: block; font-size: 11px; font-weight: 400; color: #fff; text-shadow: 2px 2px 0 var(--deep); margin-bottom: 7px; }
+  #toast em { display: block; font-size: 7px; font-style: normal; color: var(--pink-soft); }
+
+  @media (max-width: 1100px) and (min-width: 901px) { .side { --sideW: min(340px, 32vw); } }
+  @media (max-width: 900px) {
+    .layout { flex-direction: column; gap: 16px; }
+    .side { --sideW: min(210px, 56vw); }
+    .keys { display: none; }
+  }
+  @media (hover: none) { .keys { display: none; } }

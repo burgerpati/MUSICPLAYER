@@ -1,0 +1,130 @@
+/* BASE — variables, background layers, HUD, screens, shared window chrome (used by intro + playlist) */
+
+  :root {
+    --bg: #3a0824;
+    --bg-deep: #1d0414;
+    --pink: #ff8fb8;
+    --pink-soft: #f9a8d4;
+    --hot: #ff4c8a;
+    --rose: #c2467f;
+    --deep: #7a1f4d;
+    --gold: #fcd0a8;
+    --gold-hi: #fde68a;
+    --lav: #c9a0ff;
+    --ink: #2b0720;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; }
+  body {
+    background: radial-gradient(ellipse at 50% 38%, #5a0f3a 0%, var(--bg) 45%, var(--bg-deep) 100%) fixed;
+    color: var(--pink);
+    font-family: 'Pixelify Sans', 'Press Start 2P', monospace;
+    overflow-x: hidden;
+    image-rendering: pixelated;
+  }
+
+  @property --accent { syntax: '<color>'; inherits: true; initial-value: #ff4c8a; }
+  body { --accent: #ff4c8a; transition: --accent 1.2s ease; }
+  #tint {
+    position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity 1s;
+    background:
+      radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--accent) 26%, transparent) 0%, color-mix(in srgb, var(--accent) 10%, transparent) 55%, transparent 82%),
+      linear-gradient(to top, color-mix(in srgb, var(--accent) 16%, transparent), transparent 45%);
+  }
+  body.on-player #tint { opacity: 1; }
+
+  /* =============== shared background layers =============== */
+  #sky { position: fixed; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; z-index: 0; }
+
+  .floor-wrap {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 40vh;
+    perspective: 260px; overflow: hidden; z-index: 1; pointer-events: none;
+    -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 95%);
+            mask-image: linear-gradient(to top, #000 10%, transparent 95%);
+  }
+  .floor {
+    position: absolute; left: -60%; right: -60%; top: -40%; bottom: 0;
+    transform: rotateX(64deg); transform-origin: 50% 100%;
+    background:
+      linear-gradient(rgba(255, 110, 170, .5) 3px, transparent 3px) 0 0 / 56px 56px,
+      linear-gradient(90deg, rgba(255, 110, 170, .5) 3px, transparent 3px) 0 0 / 56px 56px;
+    animation: floorScroll 2.4s linear infinite;
+  }
+  @keyframes floorScroll { to { background-position: 0 56px, 0 0; } }
+
+  .horizon-glow {
+    position: fixed; left: 0; right: 0; bottom: 22vh; height: 26vh; z-index: 1; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 100%, rgba(255, 76, 138, .35), transparent 70%);
+  }
+  .scanlines {
+    position: fixed; inset: 0; z-index: 60; pointer-events: none;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,.20) 0 2px, transparent 2px 4px),
+      radial-gradient(ellipse at center, transparent 55%, rgba(10, 0, 8, .55) 100%);
+    animation: flicker 5s steps(1) infinite;
+  }
+  @keyframes flicker { 0%, 92%, 100% { opacity: 1; } 93% { opacity: .82; } 95% { opacity: .95; } }
+  #wipe { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 80; pointer-events: none; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* =============== HUD =============== */
+  .hud {
+    position: fixed; top: 18px; left: 22px; right: 22px; z-index: 20;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Press Start 2P', monospace; font-size: 10px; letter-spacing: 1px;
+    color: var(--pink); text-shadow: 2px 2px 0 var(--deep); pointer-events: none;
+  }
+  .hud .lives { display: flex; gap: 6px; align-items: center; }
+  .hud .lives span { display: inline-block; width: 21px; height: 21px; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; }
+  .hud .blink { animation: blink 1s steps(1) infinite; }
+
+  /* =============== screens =============== */
+  .screen { display: none; position: relative; z-index: 10; min-height: 100vh; min-height: 100dvh; flex-direction: column; align-items: center; justify-content: center; padding: 60px 16px 44px; text-align: center; }
+  .screen.active { display: flex; }
+
+  /* ---------- shared window chrome ---------- */
+  .win {
+    position: relative; width: min(580px, 92vw); background: var(--ink); text-align: left;
+    box-shadow:
+      0 -4px 0 0 var(--pink), 0 4px 0 0 var(--pink), -4px 0 0 0 var(--pink), 4px 0 0 0 var(--pink),
+      12px 12px 0 0 rgba(10, 0, 8, .55),
+      0 0 60px 6px rgba(255, 76, 138, .25);
+  }
+  .titlebar {
+    display: flex; align-items: center; justify-content: space-between; height: 34px; padding: 0 8px 0 12px;
+    background: repeating-linear-gradient(90deg, var(--pink) 0 4px, #ee7aa6 4px 8px);
+    color: #3a0824; font-weight: 600; font-size: 17px; letter-spacing: .05em;
+    border-bottom: 4px solid var(--rose);
+  }
+  .titlebar .name { display: flex; align-items: center; gap: 8px; }
+  .titlebar .dot { width: 10px; height: 10px; background: var(--hot); box-shadow: 2px 2px 0 #7a1f4d; animation: blink 1.2s steps(1) infinite; }
+  .titlebar .btns { display: flex; gap: 6px; }
+  .titlebar .btns i, .titlebar .btns button {
+    display: grid; place-items: center; width: 20px; height: 20px; background: #ffd3e4; color: #7a1f4d; border: 0;
+    font: inherit; font-style: normal; font-size: 14px; line-height: 1; cursor: default;
+    box-shadow: inset -2px -2px 0 #c2467f, inset 2px 2px 0 #fff;
+  }
+  .titlebar .btns button { cursor: pointer; }
+  .titlebar .btns button:hover { background: #fff; }
+  .corner { position: absolute; width: 10px; height: 10px; background: var(--rose); box-shadow: inset -2px -2px 0 var(--deep), inset 2px 2px 0 var(--pink); }
+  .corner.tl { top: 8px; left: 8px; } .corner.tr { top: 8px; right: 8px; }
+  .corner.bl { bottom: 8px; left: 8px; } .corner.br { bottom: 8px; right: 8px; }
+
+  .deck {
+    display: block; margin: 0 auto; width: min(470px, 78vw); height: auto; image-rendering: pixelated;
+    filter: drop-shadow(0 0 14px rgba(255, 90, 160, .55));
+    animation: glowPulse 2.6s ease-in-out infinite alternate;
+  }
+  @keyframes glowPulse { from { filter: drop-shadow(0 0 8px rgba(255, 90, 160, .35)); } to { filter: drop-shadow(0 0 22px rgba(255, 90, 160, .75)); } }
+  .shelf {
+    width: 82%; height: 12px; margin: -2px auto 0;
+    background: conic-gradient(#8a2656 25%, #5f1440 0 50%, #8a2656 0 75%, #5f1440 0) 0 0 / 12px 12px;
+    box-shadow: 0 -3px 0 0 var(--pink), 0 5px 0 0 #1d0414;
+  }
+
+
+  /* shared by intro window + playlist side panel */
+  @keyframes winFloat { from { transform: translateY(0); } to { transform: translateY(-6px); } }
+
+  @media (max-width: 520px) { .hud { font-size: 8px; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }

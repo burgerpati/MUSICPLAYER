@@ -1,0 +1,140 @@
+/* CUPID'S PLAYLIST SCREEN (#s-player) — player window, tracklist, controls */
+
+  /* =============== PLAYER =============== */
+  #s-player { font-family: 'Press Start 2P', monospace; }
+  .layout { display: flex; gap: 40px; align-items: center; justify-content: center; flex-wrap: wrap; width: 100%; }
+  .side { display: flex; flex-direction: column; align-items: center; animation: winFloat 4s steps(4) infinite alternate; }
+    .side .shelf { width: 88%; }
+  .side .tag { margin-top: 18px; font-size: 8px; letter-spacing: .15em; color: var(--gold); text-shadow: 2px 2px 0 var(--deep); }
+
+  #dog { image-rendering: pixelated; }
+  #s-player .win { width: min(540px, 94vw); }
+  #player-hero {
+    padding: 16px 14px; text-align: center;
+    background: repeating-linear-gradient(90deg, var(--rose) 0 4px, #b83d77 4px 8px); border-bottom: 4px solid var(--deep);
+  }
+  #hero-title { font-size: clamp(11px, 2.6vw, 15px); color: #fff; text-shadow: 3px 3px 0 var(--deep); margin-bottom: 10px; line-height: 1.5; }
+  #hero-sub { font-size: clamp(7px, 1.7vw, 9px); color: #fff0f6; margin-bottom: 9px; text-shadow: 2px 2px 0 var(--deep); }
+  #hero-congrats { font-size: clamp(6px, 1.5vw, 7px); color: var(--gold-hi); text-shadow: 2px 2px 0 var(--deep); animation: blink 1.4s steps(1) infinite; }
+
+  #player-body {
+    position: relative; padding: 4px 0 20px;
+    background:
+      radial-gradient(circle at 20% 12%, rgba(255, 76, 138, .22), transparent 55%),
+      radial-gradient(rgba(255, 143, 184, .14) 1.2px, transparent 1.8px) 0 0 / 12px 12px,
+      var(--ink);
+  }
+  #album-section { --art: clamp(90px, 22vw, 120px); display: flex; align-items: center; gap: 16px; padding: 18px 20px 0; }
+  #album-wrap { position: relative; flex-shrink: 0; width: calc(var(--art) * 1.5); height: var(--art); }
+  #album-art {
+    position: absolute; left: 0; top: 0; z-index: 2;
+    width: var(--art); height: var(--art); background: #2d0020; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    box-shadow: 0 -3px 0 0 var(--pink), 0 3px 0 0 var(--pink), -3px 0 0 0 var(--pink), 3px 0 0 0 var(--pink), 6px 6px 0 0 rgba(10, 0, 8, .6), 0 0 24px rgba(255, 76, 138, .35);
+  }
+  /* ---- spinning vinyl peeking out of the sleeve ---- */
+  #vinyl-pos { position: absolute; top: 0; left: calc(var(--art) * .2); width: var(--art); height: var(--art); z-index: 1; transition: left .6s steps(6); }
+  #album-section.playing #vinyl-pos { left: calc(var(--art) * .5); }
+  #vinyl {
+    position: relative; width: 100%; height: 100%; border-radius: 50%;
+    background:
+      conic-gradient(from 0deg, transparent 0 18%, rgba(255, 255, 255, .16) 25%, transparent 32% 68%, rgba(255, 255, 255, .16) 75%, transparent 82%),
+      repeating-radial-gradient(circle, #1a0612 0 2px, #2f0c22 2px 4px);
+    box-shadow: 0 0 0 3px var(--rose), 4px 4px 0 3px rgba(10, 0, 8, .55), 0 0 18px rgba(255, 76, 138, .3);
+    animation: vinylSpin 3.2s steps(32) infinite; animation-play-state: paused;
+  }
+  #album-section.playing #vinyl { animation-play-state: running; }
+  #vinyl::before { content: ''; position: absolute; inset: 33%; border-radius: 50%; background: var(--hot) var(--label, none) center / cover; box-shadow: 0 0 0 2px var(--gold-hi); }
+  #vinyl::after { content: ''; position: absolute; left: 50%; top: 50%; width: 9%; height: 9%; margin: -4.5% 0 0 -4.5%; border-radius: 50%; background: var(--bg-deep); box-shadow: 0 0 0 2px var(--gold-hi); }
+  @keyframes vinylSpin { to { transform: rotate(360deg); } }
+  #album-art img { width: 100%; height: 100%; object-fit: cover; display: none; image-rendering: auto; }
+  #album-fb { font-size: 34px; color: var(--pink); animation: bounce .8s steps(2) infinite; }
+  #song-meta { flex: 1; min-width: 0; }
+  #song-title { font-size: clamp(9px, 2.4vw, 12px); color: var(--gold-hi); margin-bottom: 10px; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; text-shadow: 2px 2px 0 var(--deep); }
+  #song-artist { font-size: clamp(7px, 1.8vw, 9px); color: var(--pink-soft); margin-bottom: 12px; }
+  #now-playing-tag { font-size: clamp(6px, 1.4vw, 7px); color: var(--pink); background: #2d0020; padding: 5px 8px; display: inline-block; box-shadow: 0 -2px 0 0 var(--rose), 0 2px 0 0 var(--rose), -2px 0 0 0 var(--rose), 2px 0 0 0 var(--rose); }
+  #now-playing-tag.live { animation: blink 1.2s steps(1) infinite; }
+
+  #audio-viz { margin: 16px 20px 0; display: flex; align-items: flex-end; gap: 2px; height: 44px; }
+  .avbar { flex: 1; background: linear-gradient(0deg, var(--accent), var(--gold)); min-height: 2px; opacity: .7; }
+
+  #progress-section { padding: 14px 20px 0; }
+  #prog-bar { height: 10px; background: #3d0030; cursor: pointer; position: relative; margin-bottom: 10px; box-shadow: 0 -2px 0 0 var(--deep), 0 2px 0 0 var(--deep), -2px 0 0 0 var(--deep), 2px 0 0 0 var(--deep); }
+  #prog-fill { height: 10px; width: 0%; pointer-events: none; background: repeating-linear-gradient(90deg, var(--accent) 0 6px, color-mix(in srgb, var(--accent) 70%, #fff) 6px 8px); }
+  #prog-handle { position: absolute; top: -4px; width: 12px; height: 18px; background: var(--gold-hi); transform: translateX(-6px); pointer-events: none; box-shadow: -2px 0 0 0 var(--hot), 2px 0 0 0 var(--hot); }
+  #time-row { display: flex; justify-content: space-between; font-size: clamp(7px, 1.8vw, 9px); color: var(--pink-soft); }
+
+  #controls-section { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 18px 20px 0; flex-wrap: wrap; }
+  .ctrl {
+    font-family: 'Press Start 2P', monospace; background: #3a0824; color: var(--pink-soft); border: 0; cursor: pointer;
+    padding: 9px 12px; font-size: 12px; line-height: 1;
+    box-shadow: 0 -3px 0 0 var(--rose), 0 3px 0 0 #120008, -3px 0 0 0 var(--rose), 3px 0 0 0 #120008, inset 0 -3px 0 0 #260416;
+  }
+  .ctrl:hover { background: #561236; color: var(--gold-hi); }
+  .ctrl:active { transform: translateY(3px); box-shadow: 0 -3px 0 0 var(--rose), 0 0 0 0 #120008, -3px 0 0 0 var(--rose), 3px 0 0 0 #120008; }
+  #play-btn { font-size: 17px; padding: 12px 17px; background: var(--rose); color: #fff; text-shadow: 2px 2px 0 var(--deep); box-shadow: 0 -3px 0 0 #ffb3d1, 0 3px 0 0 #6a1842, -3px 0 0 0 #ffb3d1, 3px 0 0 0 #6a1842, inset 0 -4px 0 0 #9c2f66, inset 0 4px 0 0 #e56aa0; }
+  #play-btn:hover { background: #d65390; }
+  .ctrl.active { color: var(--gold-hi); box-shadow: 0 -3px 0 0 var(--gold-hi), 0 3px 0 0 #120008, -3px 0 0 0 var(--gold-hi), 3px 0 0 0 #120008, inset 0 -3px 0 0 #260416; }
+
+  #vol-section { display: flex; align-items: center; gap: 12px; padding: 18px 20px 0; }
+  #vol-icon { font-size: 11px; color: var(--pink-soft); }
+  #vol-slider { flex: 1; height: 6px; accent-color: var(--hot); cursor: pointer; }
+  #vol-val { font-size: 7px; color: var(--pink-soft); min-width: 28px; text-align: right; }
+
+  #tracklist-section { margin: 20px 20px 0; background: #1d0414; box-shadow: 0 -3px 0 0 var(--deep), 0 3px 0 0 var(--deep), -3px 0 0 0 var(--deep), 3px 0 0 0 var(--deep); }
+  #tl-header { background: #3a0824; padding: 9px 12px; font-size: clamp(7px, 1.8vw, 9px); color: var(--pink-soft); border-bottom: 3px solid var(--deep); }
+  #tl { max-height: clamp(180px, 32vh, 280px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--rose) #1a0010; }
+  .ti { display: flex; align-items: center; gap: 10px; padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #2a0a1d; font-size: clamp(7px, 1.8vw, 9px); }
+  .ti:hover { background: #2d0a22; }
+  .ti.active { background: #4a1236; box-shadow: inset 4px 0 0 0 var(--hot); }
+  .tn { color: #a8366a; min-width: 18px; }
+  .tt { color: #fbcfe8; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tar { color: var(--pink-soft); white-space: nowrap; max-width: 38%; overflow: hidden; text-overflow: ellipsis; }
+  .ti.active .tt, .ti.active .tn { color: var(--gold-hi); }
+
+  #spotify-section { padding: 20px 20px 0; }
+  #sp-btn {
+    display: block; width: 100%; font-family: 'Press Start 2P', monospace; font-size: clamp(7px, 1.8vw, 9px);
+    background: #1DB954; color: #fff; border: 0; padding: 14px; cursor: pointer; text-decoration: none; text-align: center; text-shadow: 2px 2px 0 #0b5a28;
+    box-shadow: 0 -3px 0 0 #7af0a6, 0 3px 0 0 #0b5a28, -3px 0 0 0 #7af0a6, 3px 0 0 0 #0b5a28, inset 0 -4px 0 0 #158f43;
+  }
+  #sp-btn:hover { background: #1ed760; }
+  #sp-btn:active { transform: translateY(3px); }
+
+
+  /* ---- fit the playlist screen in one viewport (no page scroll) on desktop/tablet ---- */
+  @media (min-width: 760px) {
+    #s-player { padding: 48px 16px 16px; }
+    #s-player .win { display: flex; flex-direction: column; max-height: calc(100dvh - 72px); }
+    #s-player .win .titlebar, #player-hero { flex-shrink: 0; }
+    #player-body { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-bottom: 14px; }
+    #player-body > * { flex-shrink: 0; }
+    #tracklist-section { flex: 0 1 auto; min-height: 96px; display: flex; flex-direction: column; margin-top: 14px; }
+    #tl-header { flex-shrink: 0; }
+    #tl { flex: 0 1 auto; min-height: 0; max-height: clamp(180px, 32vh, 280px); }
+    #spotify-section { padding-top: 14px; }
+  }
+  @media (min-width: 760px) and (max-height: 900px) {
+    #player-hero { padding: 10px 14px; }
+    #hero-title { margin-bottom: 6px; }
+    #hero-sub { margin-bottom: 5px; }
+    #album-section { padding-top: 12px; }
+    #album-section { --art: 84px; }
+    #song-title { margin-bottom: 6px; }
+    #song-artist { margin-bottom: 8px; }
+    #audio-viz { margin-top: 10px; height: 28px; }
+    #progress-section { padding-top: 10px; }
+    #prog-bar { margin-bottom: 8px; }
+    #controls-section { padding-top: 12px; }
+    #vol-section { padding-top: 12px; }
+    #tracklist-section { margin-top: 12px; }
+    .ti { padding: 7px 12px; }
+    #sp-btn { padding: 10px; }
+  }
+  @media (min-width: 760px) and (max-height: 720px) {
+    #hero-congrats { display: none; }
+    #album-section { --art: 72px; }
+    #audio-viz { height: 20px; margin-top: 8px; }
+    #vol-section { display: none; }
+    #s-player .side { --sideW: min(340px, 40vw); }
+  }

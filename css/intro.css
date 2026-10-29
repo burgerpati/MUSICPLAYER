@@ -1,0 +1,84 @@
+/* INTRO SCREEN (#s-intro) — title, record-player window, START button */
+
+  /* =============== INTRO =============== */
+  #s-intro { gap: 22px; }
+  h1 {
+    font-family: 'Press Start 2P', monospace; font-weight: 400;
+    font-size: clamp(20px, 4.4vw, 46px); line-height: 1.3; letter-spacing: .12em; color: #ffa8c8;
+    text-shadow: 3px 3px 0 #d6417f, 6px 6px 0 #8c2457, 9px 9px 0 #4d0f31; white-space: nowrap;
+  }
+  h1 .ch { display: inline-block; animation: wave 2.2s steps(1) infinite; animation-delay: calc(var(--i) * .09s); }
+  h1 .sp { display: inline-block; width: .6em; }
+  @keyframes wave { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  .sub { font-size: clamp(15px, 2.1vw, 22px); letter-spacing: .08em; color: var(--pink); text-shadow: 2px 2px 0 var(--deep); min-height: 1.4em; }
+  .sub .cursor { display: inline-block; width: .5em; height: 1em; background: var(--pink); margin-left: 4px; vertical-align: -2px; animation: blink .8s steps(1) infinite; }
+
+  #s-intro .win { animation: winFloat 4s steps(4) infinite alternate; }
+  .win-body {
+    position: relative; padding: 18px 18px 14px;
+    background:
+      radial-gradient(circle at 50% 46%, rgba(255, 76, 138, .38), transparent 62%),
+      radial-gradient(rgba(255, 143, 184, .20) 1.2px, transparent 1.8px) 0 0 / 12px 12px,
+      var(--ink);
+  }
+  .player-mini {
+    margin-top: 16px; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center;
+    padding: 8px 12px; background: #1d0414; font-size: 15px; letter-spacing: .04em;
+    box-shadow: 0 -3px 0 0 var(--deep), 0 3px 0 0 var(--deep), -3px 0 0 0 var(--deep), 3px 0 0 0 var(--deep);
+  }
+  .player-mini .note { width: 20px; height: 28px; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; animation: bounce .8s steps(2) infinite; }
+  @keyframes bounce { 50% { transform: translateY(-4px); } }
+  .marquee { overflow: hidden; white-space: nowrap; text-align: left; color: var(--gold); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .marquee span { display: inline-block; padding-left: 100%; animation: marq 12s linear infinite; }
+  @keyframes marq { to { transform: translateX(-100%); } }
+  .eq { display: flex; gap: 3px; align-items: flex-end; height: 24px; }
+  .eq b { width: 5px; background: linear-gradient(0deg, var(--hot), var(--gold)); animation: eq 1s steps(5) infinite alternate; }
+  .eq b:nth-child(1) { animation-duration: .7s; } .eq b:nth-child(2) { animation-duration: 1.1s; }
+  .eq b:nth-child(3) { animation-duration: .9s; } .eq b:nth-child(4) { animation-duration: 1.3s; }
+  .eq b:nth-child(5) { animation-duration: .8s; }
+  @keyframes eq { from { height: 4px; } to { height: 24px; } }
+  .track { grid-column: 1 / -1; display: flex; gap: 3px; }
+  .track i { flex: 1; height: 8px; background: #4a1236; animation: fill 6s steps(1) infinite; animation-delay: calc(var(--i) * .3s); }
+  @keyframes fill { 0% { background: #4a1236; } 2%, 100% { background: var(--pink); } }
+
+  .start-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 6px; }
+  .start {
+    position: relative; font-family: 'Press Start 2P', monospace; font-size: clamp(14px, 2vw, 20px); letter-spacing: .1em;
+    color: #fff; background: var(--rose); border: 0; padding: 20px 40px; cursor: pointer; overflow: hidden;
+    text-shadow: 3px 3px 0 var(--deep);
+    box-shadow:
+      0 -4px 0 0 #ffb3d1, 0 4px 0 0 #6a1842, -4px 0 0 0 #ffb3d1, 4px 0 0 0 #6a1842,
+      inset 0 -6px 0 0 #9c2f66, inset 0 6px 0 0 #e56aa0, 0 0 30px rgba(255, 76, 138, .45);
+    transition: transform .08s steps(2);
+  }
+  .start::after { content: ''; position: absolute; top: 0; bottom: 0; left: -40%; width: 22%; background: rgba(255,255,255,.35); transform: skewX(-20deg); animation: shine 3s steps(14) infinite; }
+  @keyframes shine { 0%, 55% { left: -40%; } 100% { left: 140%; } }
+  .start:hover { transform: translateY(-3px); background: #d65390; }
+  .start:active { transform: translateY(4px); box-shadow: 0 -4px 0 0 #ffb3d1, 0 4px 0 0 #6a1842, -4px 0 0 0 #ffb3d1, 4px 0 0 0 #6a1842, inset 0 4px 0 0 #9c2f66; }
+  .start .arrow { display: inline-block; width: 16px; height: 28px; vertical-align: middle; background-size: contain; background-repeat: no-repeat; image-rendering: pixelated; margin: 0 14px; animation: nudge .7s steps(2) infinite; }
+  .start .arrow.l { transform: scaleX(-1); animation-name: nudgeL; }
+  @keyframes nudge { 50% { transform: translateX(5px); } }
+  @keyframes nudgeL { 0% { transform: scaleX(-1) translateX(0); } 50% { transform: scaleX(-1) translateX(5px); } }
+  .hint { font-family: 'Press Start 2P', monospace; font-size: 9px; letter-spacing: .15em; color: var(--gold); text-shadow: 2px 2px 0 var(--deep); animation: blink 1.1s steps(1) infinite; }
+  .loadbar { display: none; width: 260px; height: 16px; padding: 3px; background: #1d0414; box-shadow: 0 -3px 0 0 var(--pink), 0 3px 0 0 var(--pink), -3px 0 0 0 var(--pink), 3px 0 0 0 var(--pink); }
+  .loadbar.on { display: block; }
+  .loadbar i { display: block; height: 100%; width: 0; background: repeating-linear-gradient(90deg, var(--hot) 0 8px, transparent 8px 11px); }
+
+
+  @media (max-width: 520px) { h1 { white-space: normal; } }
+
+  /* ---- fit the intro screen in one viewport (no page scroll) ---- */
+  #s-intro .deck { width: auto; max-width: min(470px, 78vw); max-height: clamp(110px, calc(100dvh - 520px), 380px); }
+  @media (max-height: 900px) {
+    #s-intro { gap: 14px; padding-top: 40px; padding-bottom: 24px; }
+    #s-intro .win-body { padding: 12px 18px 10px; }
+    #s-intro .player-mini { margin-top: 10px; padding: 6px 12px; }
+    #s-intro .start-wrap { gap: 10px; margin-top: 0; }
+    #s-intro .start { padding: 14px 32px; }
+  }
+  @media (max-height: 700px) {
+    #s-intro { gap: 8px; padding-top: 34px; padding-bottom: 14px; }
+    #s-intro .sub { font-size: 14px; }
+    #s-intro .start { padding: 10px 26px; }
+    #s-intro .hint { font-size: 8px; }
+  }

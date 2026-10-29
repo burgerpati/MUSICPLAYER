@@ -1,0 +1,8 @@
+/* EXTRAS — mini pup + cursor sparkle trail */
+
+  /* =============== MINI PUP + CURSOR TRAIL =============== */
+  #pup { position: fixed; left: 0; bottom: 4px; z-index: 15; image-rendering: pixelated; pointer-events: auto; filter: drop-shadow(0 0 6px rgba(255, 76, 138, .6)); transition: opacity .6s; }
+  #pup.snooze { opacity: .55; }
+  #trail { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 90; pointer-events: none; image-rendering: pixelated; }
+  .pup-fx { position: fixed; z-index: 16; font-size: 14px; color: #ff8fb8; pointer-events: none; text-shadow: 2px 2px 0 #7a1f4d; font-family: system-ui, sans-serif; animation: floatUp 1.4s steps(7) forwards; }
+  @media (hover: none) { #trail { display: none; } }
